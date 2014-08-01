@@ -12,7 +12,7 @@
  */
 class Action extends Eloquent
 {
-    protected $visible = ['name', 'title', 'uri', 'resource', 'responses', 'messages', 'redirects', 'fields', 'view', 'view_config'];
+    protected $visible = ['name', 'title', 'uri', 'method', 'resource', 'responses', 'messages', 'redirects', 'fields', 'view', 'view_config'];
 
     /**
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo
