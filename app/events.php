@@ -185,7 +185,16 @@ Action::deleting(function(Action $action) {
     $action->responses()->delete();
     $action->messages()->delete();
     $action->redirects()->delete();
-    $action->node->delete();
+
+    if($action->node) {
+        $action->node->delete();
+    }
+});
+
+Element::deleting(function(Element $element) {
+
+    $element->fields()->delete();
+
 });
 
 
