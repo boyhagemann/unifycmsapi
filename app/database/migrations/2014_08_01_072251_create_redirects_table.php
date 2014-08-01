@@ -32,9 +32,7 @@ class CreateRedirectsTable extends Migration {
      */
     public function down()
     {
-        Schema::table('action_redirects', function(Blueprint $table) {
-            $table->drop();
-        });
+        Schema::drop('action_redirects');
     }
 
 }

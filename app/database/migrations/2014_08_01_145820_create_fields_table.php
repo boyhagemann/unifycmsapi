@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResponsesTable extends Migration {
+class CreateFieldsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,17 +12,20 @@ class CreateResponsesTable extends Migration {
 	 */
 	public function up()
 	{
-        Schema::create('action_responses', function(Blueprint $table) {
+        Schema::create('fields', function(Blueprint $table) {
 
             $table->increments('id');
             $table->timestamps();
 
             $table->integer('action_id');
-            $table->enum('status', ['success', 'error']);
-            $table->string('name');
-            $table->string('value')->nullable();
+            $table->integer('element_id');
 
-            $table->index('action_id');
+            $table->string('view');
+            $table->longText('view_config');
+            $table->integer('order');
+
+            $table->unique(['action_id', 'element_id']);
+            $table->index('order');
         });
 	}
 
@@ -33,7 +36,7 @@ class CreateResponsesTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::drop('action_responses');
+        Schema::drop('fields');
 	}
 
 }

@@ -35,9 +35,7 @@ class CreateMessagesTable extends Migration {
      */
     public function down()
     {
-        Schema::table('action_messages', function(Blueprint $table) {
-            $table->drop();
-        });
+        Schema::drop('action_messages');
     }
 
 }

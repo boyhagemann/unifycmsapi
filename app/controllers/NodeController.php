@@ -9,7 +9,7 @@ class NodeController extends \BaseController {
 	 */
 	public function index()
 	{
-        return Node::all();
+        return Node::all()->toHierarchy();
 	}
 
 

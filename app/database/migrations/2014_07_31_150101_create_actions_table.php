@@ -36,9 +36,7 @@ class CreateActionsTable extends Migration {
      */
     public function down()
     {
-        Schema::table('actions', function(Blueprint $table) {
-            $table->drop();
-        });
+        Schema::drop('actions');
     }
 
 }

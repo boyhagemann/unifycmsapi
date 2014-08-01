@@ -6,7 +6,8 @@
 	"require": {
 		"laravel/framework": "4.2.*",
         "cviebrock/eloquent-sluggable": "2.*",
-        "guzzle/guzzle": "3.*"
+        "guzzle/guzzle": "3.*",
+        "baum/baum": "~1.0"
 	},
 	"autoload": {
 		"classmap": [

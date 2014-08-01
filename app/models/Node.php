@@ -1,12 +1,14 @@
 <?php
 
 /**
- * Class Node
+* Node
  *
  * @property Action $action
- */
-class Node extends Eloquent
+*/
+class Node extends Baum\Node
 {
+    protected $visible = ['label', 'uri', 'action_id', 'children'];
+
     /**
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -14,5 +16,4 @@ class Node extends Eloquent
     {
         return $this->belongsTo('Action');
     }
-
 }

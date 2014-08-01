@@ -7,10 +7,13 @@
  * @property ActionResponse[] $responses
  * @property ActionMessage[] $messages
  * @property ActionRedirect[] $redirects
+ * @property Field[] $fields
  * @property Node $node
  */
 class Action extends Eloquent
 {
+    protected $visible = ['name', 'title', 'uri', 'resource', 'responses', 'messages', 'redirects', 'fields', 'view', 'view_config'];
+
     /**
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -41,6 +44,14 @@ class Action extends Eloquent
     public function redirects()
     {
         return $this->hasMany('ActionRedirect');
+    }
+
+    /**
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function fields()
+    {
+        return $this->hasMany('Field');
     }
 
     /**

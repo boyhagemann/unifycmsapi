@@ -6,7 +6,7 @@ Resource::created(function(Resource $resource) {
     Action::unguard();
 
     // Index
-    Action::create([
+    $index = Action::create([
         'resource_id' => $resource->id,
         'name' => 'index',
         'title' => 'Index',
@@ -16,22 +16,32 @@ Resource::created(function(Resource $resource) {
         'view_config' => [],
     ]);
 
-    // Store
-    Action::create([
+    $indexNode = Node::create([
+        'action_id' => $index->id,
+        'label' => $index->title,
+        'uri' => $resource->slug,
+    ]);
+
+    // Create
+    $create = Action::create([
         'resource_id' => $resource->id,
         'name' => 'create',
         'title' => 'Create',
         'uri' => '/',
         'method' => 'POST',
-        'view' => 'redirect',
-        'view_config' => [
-            'route' => $resource->slug . '.index',
-            'message' => 'Item is created!',
-        ],
+        'view' => 'form',
+        'view_config' => [],
     ]);
 
+    $createNode = Node::create([
+        'action_id' => $create->id,
+        'label' => $create->title,
+        'uri' => $resource->slug . '/create',
+    ]);
+    $createNode->makeChildOf($indexNode);
+
     // Show
-    Action::create([
+    $show = Action::create([
         'resource_id' => $resource->id,
         'name' => 'show',
         'title' => 'Show',
@@ -41,33 +51,48 @@ Resource::created(function(Resource $resource) {
         'view_config' => [],
     ]);
 
-    // Update
-    Action::create([
+    $showNode = Node::create([
+        'action_id' => $show->id,
+        'label' => $show->title,
+        'uri' => $resource->slug . '/{id}',
+    ]);
+    $showNode->makeChildOf($indexNode);
+
+    // Edit
+    $edit = Action::create([
         'resource_id' => $resource->id,
         'name' => 'edit',
         'title' => 'Edit',
         'uri' => '/{id}',
         'method' => 'PUT',
-        'view' => 'redirect',
-        'view_config' => [
-            'route' => $resource->slug . '.index',
-            'message' => 'Item is updated!',
-        ],
+        'view' => 'form',
+        'view_config' => [],
     ]);
 
-    // Destroy
-    Action::create([
+    $editNode = Node::create([
+        'action_id' => $edit->id,
+        'label' => $edit->title,
+        'uri' => $resource->slug . '/{id}/edit',
+    ]);
+    $editNode->makeChildOf($indexNode);
+
+    // Delete
+    $delete = Action::create([
         'resource_id' => $resource->id,
         'name' => 'delete',
         'title' => 'Delete',
         'uri' => '/{id}',
         'method' => 'DELETE',
-        'view' => 'redirect',
-        'view_config' => [
-            'route' => $resource->slug . '.index',
-            'message' => 'Item is deleted!',
-        ],
+        'view' => 'delete',
+        'view_config' => [],
     ]);
+
+    $deleteNode = Node::create([
+        'action_id' => $delete->id,
+        'label' => $delete->title,
+        'uri' => $resource->slug . '/{id}/delete',
+    ]);
+    $deleteNode->makeChildOf($indexNode);
 });
 
 
@@ -140,29 +165,20 @@ Action::created(function(Action $action) {
     }
 });
 
-Action::created(function(Action $action) {
+Element::created(function(Element $element) {
 
-    $uri = $action->resource->slug;
+    $actions = $element->resource->actions;
 
-    switch($action->name) {
+    foreach($actions as $action) {
 
-        case 'show':
-            $uri .= '/{id}';
-            break;
+        if($action->name == 'delete') {
+            continue;
+        }
 
-        case 'create':
-        case 'edit':
-        case 'delete':
-            $uri .= '/{id}/' . $action->name;
-            break;
-
+        $field = Event::until('element.created', [$action, $element]);
+        $field->save();
     }
 
-    Node::create([
-        'action_id' => $action->id,
-        'label' => $action->title,
-        'uri' => $uri,
-    ]);
 });
 
 Action::deleting(function(Action $action) {
@@ -170,4 +186,17 @@ Action::deleting(function(Action $action) {
     $action->messages()->delete();
     $action->redirects()->delete();
     $action->node->delete();
+});
+
+
+Event::listen('element.created', function(Action $action, Element $element) {
+
+    return Field::firstOrNew([
+        'element_id' => $element->id,
+        'action_id' => $action->id,
+        'view' => 'form.text',
+        'view_config' => [
+            'placeholder' => 'haaaa...',
+        ],
+    ]);
 });

@@ -7,6 +7,8 @@
  */
 class ActionResponse extends Eloquent
 {
+    protected $visible = ['status', 'name', 'value', 'action'];
+
     /**
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */

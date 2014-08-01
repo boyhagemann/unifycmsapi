@@ -26,9 +26,7 @@ class CreateNavigationTable extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('navigation', function(Blueprint $table) {
-            $table->drop();
-        });
+        Schema::drop('navigation');
 	}
 
 }

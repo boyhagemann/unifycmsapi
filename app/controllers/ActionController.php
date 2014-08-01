@@ -43,7 +43,7 @@ class ActionController extends \BaseController {
 	 */
 	public function show(Action $action)
 	{
-		return $action;
+		return $action->load(['responses', 'messages', 'redirects', 'resource', 'fields', 'fields.element']);
 	}
 
 
