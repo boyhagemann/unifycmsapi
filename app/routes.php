@@ -16,5 +16,10 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+Route::model('resources', 'Resource');
+Route::model('actions', 'Action');
+Route::model('elements', 'Element');
+
 Route::resource('resources', 'ResourceController');
 Route::resource('actions', 'ActionController');
+Route::resource('elements', 'ElementController');

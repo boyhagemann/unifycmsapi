@@ -20,6 +20,8 @@ class Resource extends Eloquent implements SluggableInterface
 
     protected $fillable = ['uri', 'title'];
 
+    protected $visible = ['id', 'uri', 'title', 'actions', 'elements'];
+
     /**
      * @return Illuminate\Database\Eloquent\Relations\HasMany
      */

@@ -17,22 +17,22 @@ Resource::created(function(Resource $resource) {
     ]);
 
     // Create
-    Action::create([
-        'resource_id' => $resource->id,
-        'name' => 'create',
-        'title' => 'Create',
-        'uri' => '/create',
-        'method' => 'GET',
-        'view' => 'form',
-        'view_config' => [],
-    ]);
+//    Action::create([
+//        'resource_id' => $resource->id,
+//        'name' => 'create',
+//        'title' => 'Create',
+//        'uri' => '/create',
+//        'method' => 'GET',
+//        'view' => 'form',
+//        'view_config' => [],
+//    ]);
 
     // Store
     Action::create([
         'resource_id' => $resource->id,
         'name' => 'store',
-        'title' => 'Store',
-        'uri' => '/create',
+        'title' => 'Create',
+        'uri' => '/',
         'method' => 'POST',
         'view' => 'redirect',
         'view_config' => [
@@ -44,8 +44,8 @@ Resource::created(function(Resource $resource) {
     // Show
     Action::create([
         'resource_id' => $resource->id,
-        'name' => 'store',
-        'title' => 'Store',
+        'name' => 'show',
+        'title' => 'Show',
         'uri' => '/{id}',
         'method' => 'GET',
         'view' => 'show',
@@ -53,15 +53,15 @@ Resource::created(function(Resource $resource) {
     ]);
 
     // Edit
-    Action::create([
-        'resource_id' => $resource->id,
-        'name' => 'edit',
-        'title' => 'Edit',
-        'uri' => '/{id}/edit',
-        'method' => 'GET',
-        'view' => 'form',
-        'view_config' => [],
-    ]);
+//    Action::create([
+//        'resource_id' => $resource->id,
+//        'name' => 'edit',
+//        'title' => 'Edit',
+//        'uri' => '/{id}/edit',
+//        'method' => 'GET',
+//        'view' => 'form',
+//        'view_config' => [],
+//    ]);
 
     // Update
     Action::create([
@@ -112,4 +112,68 @@ Resource::created(function(Resource $resource) {
         $element->type = 'string';
         $element->save();
     }
+});
+
+Resource::deleting(function(Resource $resource) {
+
+    foreach($resource->actions as $action) {
+        $action->delete();
+    }
+
+    foreach($resource->elements as $element) {
+        $element->delete();
+    }
+});
+
+Action::created(function(Action $action) {
+
+    if($action->uri == '/' && $action->method == 'POST') {
+
+        ActionResponse::create([
+            'action_id' => $action->id,
+            'status' => 'success',
+            'name' => 'success',
+            'value' => 'true',
+        ]);
+
+        ActionMessage::create([
+            'action_id' => $action->id,
+            'status' => 'success',
+            'body' => 'Item is succesfully created',
+        ]);
+
+    }
+
+    if($action->uri == '/{id}' && $action->method == 'PUT') {
+
+        ActionResponse::create([
+            'action_id' => $action->id,
+            'status' => 'success',
+            'name' => 'success',
+            'value' => 'true',
+        ]);
+
+        ActionMessage::create([
+            'action_id' => $action->id,
+            'status' => 'success',
+            'body' => 'Item is succesfully updated',
+        ]);
+
+    }
+});
+
+Action::created(function(Action $action) {
+
+    Node::create([
+        'action_id' => $action->id,
+        'label' => $action->title,
+        'uri' => $action->name,
+    ]);
+});
+
+Action::deleting(function(Action $action) {
+    $action->responses()->delete();
+    $action->messages()->delete();
+    $action->redirects()->delete();
+    $action->node->delete();
 });

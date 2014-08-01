@@ -4,6 +4,10 @@
  * Class Action
  *
  * @property Resource $resource
+ * @property ActionResponse[] $responses
+ * @property ActionMessage[] $messages
+ * @property ActionRedirect[] $redirects
+ * @property Node $node
  */
 class Action extends Eloquent
 {
@@ -13,6 +17,38 @@ class Action extends Eloquent
     public function resource()
     {
         return $this->belongsTo('Resource');
+    }
+
+    /**
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function responses()
+    {
+        return $this->hasMany('ActionResponse');
+    }
+
+    /**
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany('ActionMessage');
+    }
+
+    /**
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function redirects()
+    {
+        return $this->hasMany('ActionRedirect');
+    }
+
+    /**
+     * @return Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function node()
+    {
+        return $this->hasOne('Node');
     }
 
     /**

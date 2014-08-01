@@ -44,19 +44,23 @@ class ResourceController extends \BaseController {
         $resource->fill(Input::only('title'));
         $resource->save();
 
-        return ['success' => true, 'errors' => []];
+        return [
+            'success' => true,
+            'errors' => [],
+            'data' => $resource->toArray(),
+        ];
 	}
 
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  Resource $resource
 	 * @return Response
 	 */
-	public function show($id)
+	public function show(Resource $resource)
 	{
-		//
+		return $resource;
 	}
 
 
@@ -90,9 +94,11 @@ class ResourceController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy(Resource $resource)
 	{
-		//
+		$resource->delete();
+
+        return ['success' => true, 'message' => 'Resource deleted'];
 	}
 
 
