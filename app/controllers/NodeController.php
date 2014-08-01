@@ -1,6 +1,6 @@
 <?php
 
-class ActionController extends \BaseController {
+class NodeController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
@@ -9,7 +9,7 @@ class ActionController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+        return Node::all();
 	}
 
 
@@ -31,19 +31,18 @@ class ActionController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
 	}
 
 
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  Action $action
-	 * @return Action
+	 * @param  Node $node
+	 * @return Node
 	 */
-	public function show(Action $action)
+	public function show(Node $node)
 	{
-		return $action;
+		return $node;
 	}
 
 
@@ -74,14 +73,14 @@ class ActionController extends \BaseController {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  Action $action
+	 * @param  Node $node
 	 * @return array
 	 */
-	public function destroy(Action $action)
+	public function destroy(Node $node)
 	{
-        $action->delete();
+        $node->delete();
 
-        return ['success' => true, 'message' => 'Action deleted'];
+        return ['success' => true, 'message' => 'Node deleted'];
 	}
 
 

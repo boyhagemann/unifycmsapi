@@ -16,21 +16,10 @@ Resource::created(function(Resource $resource) {
         'view_config' => [],
     ]);
 
-    // Create
-//    Action::create([
-//        'resource_id' => $resource->id,
-//        'name' => 'create',
-//        'title' => 'Create',
-//        'uri' => '/create',
-//        'method' => 'GET',
-//        'view' => 'form',
-//        'view_config' => [],
-//    ]);
-
     // Store
     Action::create([
         'resource_id' => $resource->id,
-        'name' => 'store',
+        'name' => 'create',
         'title' => 'Create',
         'uri' => '/',
         'method' => 'POST',
@@ -52,22 +41,11 @@ Resource::created(function(Resource $resource) {
         'view_config' => [],
     ]);
 
-    // Edit
-//    Action::create([
-//        'resource_id' => $resource->id,
-//        'name' => 'edit',
-//        'title' => 'Edit',
-//        'uri' => '/{id}/edit',
-//        'method' => 'GET',
-//        'view' => 'form',
-//        'view_config' => [],
-//    ]);
-
     // Update
     Action::create([
         'resource_id' => $resource->id,
-        'name' => 'update',
-        'title' => 'Update',
+        'name' => 'edit',
+        'title' => 'Edit',
         'uri' => '/{id}',
         'method' => 'PUT',
         'view' => 'redirect',
@@ -80,7 +58,7 @@ Resource::created(function(Resource $resource) {
     // Destroy
     Action::create([
         'resource_id' => $resource->id,
-        'name' => 'destroy',
+        'name' => 'delete',
         'title' => 'Delete',
         'uri' => '/{id}',
         'method' => 'DELETE',
@@ -164,10 +142,26 @@ Action::created(function(Action $action) {
 
 Action::created(function(Action $action) {
 
+    $uri = $action->resource->slug;
+
+    switch($action->name) {
+
+        case 'show':
+            $uri .= '/{id}';
+            break;
+
+        case 'create':
+        case 'edit':
+        case 'delete':
+            $uri .= '/{id}/' . $action->name;
+            break;
+
+    }
+
     Node::create([
         'action_id' => $action->id,
         'label' => $action->title,
-        'uri' => $action->name,
+        'uri' => $uri,
     ]);
 });
 

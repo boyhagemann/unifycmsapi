@@ -19,7 +19,9 @@ Route::get('/', function()
 Route::model('resources', 'Resource');
 Route::model('actions', 'Action');
 Route::model('elements', 'Element');
+Route::model('nodes', 'Node');
 
 Route::resource('resources', 'ResourceController');
 Route::resource('actions', 'ActionController');
 Route::resource('elements', 'ElementController');
+Route::resource('nodes', 'NodeController');
